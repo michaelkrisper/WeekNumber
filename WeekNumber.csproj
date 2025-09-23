@@ -108,10 +108,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\CustomColorsRenderer.cs" />
-    <Compile Include="Controls\CustomComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="IconSize.cs" />
     <Compile Include="IGui.cs" />
     <Compile Include="Log.cs" />
