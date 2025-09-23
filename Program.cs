@@ -1,92 +1,46 @@
-﻿#region Using statements
-
+﻿using Microsoft.Win32;
 using System;
-using System.Runtime;
-using System.Threading;
+using System.Drawing;
+using System.Globalization;
+using System.IO;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
-
-#endregion Using statements
 
 namespace WeekNumber
 {
-    internal class Program
+    class Program : ApplicationContext
     {
-        #region Private variable to allow only one instance of application
-
-        private static readonly Mutex Mutex = new Mutex(true, "550adc75-8afb-4813-ac91-8c8c6cb681ae");
-
-        #endregion Private variable to allow only one instance of application
-
-        #region Application starting point
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool SetProcessDpiAwarenessContext(IntPtr dpiContext);
+        private const string RegistryKeyPath = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
 
         [STAThread]
         private static void Main()
         {
-            if (!Mutex.WaitOne(TimeSpan.Zero, true))
-            {
-                return;
-            }
-            WeekApplicationContext context = null;
-            try
-            {
-                Log.Init();
-                AppDomain.CurrentDomain.UnhandledException += UnhandledExceptionTrapper;
-                Log.Info = "=== Application started ===";
-                Log.Info = Application.ProductName + " version " + Application.ProductVersion;
-                NativeMethods.RefreshTrayArea();
-                SetGCSettings();
-                Application.EnableVisualStyles();
-                Application.VisualStyleState = VisualStyleState.ClientAndNonClientAreasEnabled;
-                Application.SetCompatibleTextRenderingDefault(false);
-                context = new WeekApplicationContext();
-                if (context?.Gui != null)
-                {
-                    Application.Run(context);
-                }
-            }
-            finally
-            {
-                Log.Close("=== Application ended ===");
-                context?.Dispose();
-                Mutex.ReleaseMutex();
-            }
+            SetProcessDpiAwarenessContext(new IntPtr(-4));
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Program context = new();
+            Application.Run(context);
+            context.Dispose();
         }
 
-        #endregion Application starting point
-
-        #region Private methods
-
-        /// <summary>
-        /// Configures garbarge collection settings
-        /// </summary>
-        private static void SetGCSettings()
+        public Program()
         {
-            Log.LogCaller();
-            GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-            GCSettings.LatencyMode = GCLatencyMode.Batch;
+            var week = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday).ToString(CultureInfo.InvariantCulture).PadLeft(2, '0');
+            using Bitmap bitmap = new Bitmap(32, 32);
+            using Graphics graphics = Graphics.FromImage(bitmap);
+            using Font font = new Font("Segoe UI", 18);
+            using Brush brush = new SolidBrush(Color.White);
+            graphics.DrawString(week, font, brush, 0, 0);
+            using Icon icon = Icon.FromHandle(bitmap.GetHicon());
+            ContextMenu context = new ContextMenu([new MenuItem("Exit", (_, __) => Application.Exit())]);
+            _ = new NotifyIcon { Visible = true, ContextMenu = context, Icon = icon };
+
+            using var registryKey = Registry.CurrentUser.OpenSubKey(RegistryKeyPath, true);
+            registryKey?.SetValue(Path.GetFileNameWithoutExtension(Application.ExecutablePath), Application.ExecutablePath);
+
         }
-
-        #endregion Private methods that configures garbarge collection settings
-
-        #region Global unhandled Exception trap
-
-        /// <summary>
-        /// Catches all unhandled exceptions for the application
-        /// Writes the exception to the application log file
-        /// Terminates the application with exit code -1
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private static void UnhandledExceptionTrapper(object sender, UnhandledExceptionEventArgs e)
-        {
-            Exception ex = (Exception)e.ExceptionObject;
-            Log.Error = ex;
-            Message.Show(Resources.UnhandledException, ex);
-            Log.Close("=== Application ended ===");
-            Environment.Exit(1);
-        }
-
-        #endregion Global unhandled Exception trap
     }
 }

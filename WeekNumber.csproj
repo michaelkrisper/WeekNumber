@@ -4,6 +4,7 @@
   <PropertyGroup>
     <ProjectGuid>{82D086D4-E145-4487-81FA-28BD3B1577D2}</ProjectGuid>
     <OutputType>WinExe</OutputType>
+    <LangVersion>latest</LangVersion>
     <RootNamespace>WeekNumber</RootNamespace>
     <AssemblyName>WeekNumber</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -13,6 +14,7 @@
     <ResolveComReferenceSilent>True</ResolveComReferenceSilent>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -27,7 +29,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -46,20 +47,25 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\x64\Release\WeekNumber.xml</DocumentationFile>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DocumentationFile>
+    </DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ResolveComReferenceSilent>True</ResolveComReferenceSilent>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -82,16 +88,16 @@
     <StartupObject>WeekNumber.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\weekicon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Properties\WeekNumber.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
@@ -108,87 +114,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IconSize.cs" />
-    <Compile Include="IGui.cs" />
-    <Compile Include="Log.cs" />
-    <Compile Include="Message.cs" />
-    <Compile Include="NativeMethods.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\Resources.de-DE.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.de-DE.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\Resources.Designer.cs">
-      <DependentUpon>Resources.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Resources\Resources.en-US.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.en-US.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Resources\Resources.sv-SE.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.sv-SE.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Settings.cs" />
-    <Compile Include="TaskbarGui.cs" />
-    <Compile Include="TaskbarUtil.cs" />
-    <Compile Include="Week.cs" />
-    <Compile Include="WeekApplicationContext.cs" />
-    <Compile Include="WeekIcon.cs" />
-    <Compile Include="WeekNumberContextMenu.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Properties\App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Properties\app.manifest">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Properties\WeekNumber.snk" />
-    <None Include="README.md" />
-    <None Include="README.de-DE.md" />
-    <None Include="README.sv-SE.md" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Docs\ToDo_Ideas.txt" />
-    <Content Include="Installation\License.de-DE.txt" />
-    <Content Include="Installation\License.en-US.txt" />
-    <Content Include="Installation\License.sv-SE.txt" />
-    <Content Include="Resources\weekicon.ico" />
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Resources.de-DE.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.de-DE.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>WeekNumber</CustomToolNamespace>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Resources.sv-SE.resx">
-      <CustomToolNamespace>WeekNumber</CustomToolNamespace>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.sv-SE.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Resources.en-US.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.en-US.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>WeekNumber</CustomToolNamespace>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>CMD /C TASKKILL /IM $(TargetFileName) /FI "STATUS eq RUNNING" /T /F</PreBuildEvent>
