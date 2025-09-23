@@ -56,6 +56,7 @@ namespace WeekNumber
         private void DisplayUserInfoBalloonTip(string message)
         {
             // Notifications disabled in simplified version
+            return;
         }
 
         #endregion Display NotifyIcon BalloonTip
