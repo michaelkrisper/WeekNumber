@@ -25,7 +25,7 @@ namespace WeekNumber
 
         internal static int GetIconResolution(bool forceUpdate = false)
         {
-            int iconResolution = Settings.GetIntSetting(Resources.IconResolution, -1);
+            int iconResolution = (int)IconSize.Icon256; // Use hardcoded default
             double myDbl = 1.0d;
             if (forceUpdate || iconResolution == -1)
             {
@@ -46,7 +46,7 @@ namespace WeekNumber
 
                 Log.Info = $"Closest icon resolution={closest}x{closest}";
 
-                Settings.UpdateSetting(Resources.IconResolution, closest.ToString());
+                // No longer saving to settings in simplified version
                 iconResolution = closest;
             }
 
@@ -90,10 +90,10 @@ namespace WeekNumber
             using (Bitmap bitmap = new Bitmap(size, size))
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
-                graphics.SmoothingMode = (System.Drawing.Drawing2D.SmoothingMode)Settings.GetIntSetting(Resources.SmoothingMode, (int)System.Drawing.Drawing2D.SmoothingMode.HighQuality);
-                graphics.CompositingQuality = (System.Drawing.Drawing2D.CompositingQuality)Settings.GetIntSetting(Resources.CompositingQuality, (int)System.Drawing.Drawing2D.CompositingQuality.HighQuality);
-                graphics.InterpolationMode = (System.Drawing.Drawing2D.InterpolationMode)Settings.GetIntSetting(Resources.InterpolationMode, (int)System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic);
-                graphics.TextContrast = Settings.GetIntSetting(Resources.TextContrast, 1);
+                graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                graphics.TextContrast = 1;
                 DrawBackgroundOnGraphics(graphics, size);
                 DrawWeekNumberOnGraphics(weekNumber, graphics, size);
                 IntPtr bHicon = bitmap.GetHicon();
@@ -152,14 +152,8 @@ namespace WeekNumber
             {
                 size = _defaultSize;
             }
-            Color backgroundColor = Color.FromArgb(Settings.GetIntSetting(Resources.IconBackgroundAlpha),
-                Settings.GetIntSetting(Resources.IconBackgroundRed),
-                Settings.GetIntSetting(Resources.IconBackgroundGreen),
-                Settings.GetIntSetting(Resources.IconBackgroundBlue));
-            Color foregroundColor = Color.FromArgb(
-                Settings.GetIntSetting(Resources.IconForegroundRed, 255),
-                Settings.GetIntSetting(Resources.IconForegroundGreen, 255),
-                Settings.GetIntSetting(Resources.IconForegroundBlue, 255));
+            Color backgroundColor = Color.FromArgb(255, 0, 0, 0); // Black background with full alpha
+            Color foregroundColor = Color.FromArgb(255, 255, 255); // White foreground
             using (SolidBrush foregroundBrush = new SolidBrush(foregroundColor))
             using (SolidBrush backgroundBrush = new SolidBrush(backgroundColor))
             {
@@ -182,10 +176,7 @@ namespace WeekNumber
             float fontSize = (float)System.Math.Abs(size * .78125);
             // float insetX = (float)-(size > (int)IconSize.Icon16 ? System.Math.Abs(fontSize * .12) : System.Math.Abs(fontSize * .07));
             float insetY = (float)(size > (int)IconSize.Icon16 ? System.Math.Abs(fontSize * .2) : System.Math.Abs(fontSize * .08));
-            Color foregroundColor = Color.FromArgb(
-                Settings.GetIntSetting(Resources.IconForegroundRed),
-                Settings.GetIntSetting(Resources.IconForegroundGreen),
-                Settings.GetIntSetting(Resources.IconForegroundBlue));
+            Color foregroundColor = Color.FromArgb(255, 255, 255); // White foreground
 
             using (Font font = new Font("Aurulent Sans Mono", fontSize * 0.8f, FontStyle.Regular,
                 GraphicsUnit.Pixel, 0, false))

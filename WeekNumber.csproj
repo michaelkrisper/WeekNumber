@@ -112,19 +112,6 @@
     <Compile Include="Controls\CustomComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\DateForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\DateForm.designer.cs">
-      <DependentUpon>DateForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\MessageForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\MessageForm.designer.cs">
-      <DependentUpon>MessageForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\WeekNumberForDateForm.cs" />
     <Compile Include="IconSize.cs" />
     <Compile Include="IGui.cs" />
     <Compile Include="Log.cs" />
@@ -181,12 +168,6 @@
     <Content Include="Resources\weekicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Forms\DateForm.resx">
-      <DependentUpon>DateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MessageForm.resx">
-      <DependentUpon>MessageForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Resources.de-DE.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.de-DE.Designer.cs</LastGenOutput>

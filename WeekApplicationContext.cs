@@ -31,7 +31,6 @@ namespace WeekNumber
             try
             {
                 Log.LogCaller();
-                Settings.StartWithWindows = Settings.SettingIsValue(Resources.StartWithWindows, true.ToString());
                 Application.ApplicationExit += OnApplicationExit;
                 SystemEvents.UserPreferenceChanged += OnUserPreferenceChanged;
                 _currentWeek = Week.Current();
@@ -118,7 +117,7 @@ namespace WeekNumber
             {
                 Log.LogCaller();
                 _currentWeek = Week.Current();
-                int iconResolution = Settings.GetIntSetting(Resources.IconResolution, (int)IconSize.Icon256);
+                int iconResolution = (int)IconSize.Icon256; // Use default icon resolution since settings are removed
                 Log.Info = $"Update icon with week number {_currentWeek} using resolution {iconResolution}x{iconResolution}, redraw context menu={redrawContextMenu}, forced update={force}";
                 Gui?.UpdateIcon(_currentWeek, iconResolution, redrawContextMenu);
             }

@@ -66,17 +66,13 @@ namespace WeekNumber
         #region Public functions that returns week number based on calendar rules
 
         /// <summary>
-        /// Get current week based on calendar rules in application settings
+        /// Get current week based on hardcoded calendar rules (Monday, FirstFourDayWeek)
         /// </summary>
-        /// <returns>Current week as int based on calendar rules in application settings</returns>
+        /// <returns>Current week as int based on hardcoded calendar rules</returns>
         public static int Current()
         {
-            DayOfWeek dayOfWeek;
-            CalendarWeekRule calendarWeekRule;
-            dayOfWeek = Enum.TryParse(Settings.GetSetting(DayOfWeekString), true, out dayOfWeek) ?
-                dayOfWeek : DayOfWeek.Monday;
-            calendarWeekRule = Enum.TryParse(Settings.GetSetting(CalendarWeekRuleString), true,
-                out calendarWeekRule) ? calendarWeekRule : CalendarWeekRule.FirstFourDayWeek;
+            DayOfWeek dayOfWeek = DayOfWeek.Monday;
+            CalendarWeekRule calendarWeekRule = CalendarWeekRule.FirstFourDayWeek;
             int week = CultureInfo.CurrentCulture.Calendar.
                 GetWeekOfYear(DateTime.Now, calendarWeekRule, dayOfWeek);
             if (week == 53 && (!YearHas53Weeks(DateTime.Now.Year)))
@@ -88,18 +84,14 @@ namespace WeekNumber
         }
 
         /// <summary>
-        /// Get week number based on calendar rules in application settings
+        /// Get week number based on hardcoded calendar rules (Monday, FirstFourDayWeek)
         /// </summary>
         /// <param name="date">Date for which to get week number for</param>
         /// <returns>Week number as for supplied date</returns>
         public static int GetWeekNumber(DateTime date)
         {
-            DayOfWeek dayOfWeek;
-            CalendarWeekRule calendarWeekRule;
-            dayOfWeek = Enum.TryParse(Settings.GetSetting(DayOfWeekString), true, out dayOfWeek) ?
-                dayOfWeek : DayOfWeek.Monday;
-            calendarWeekRule = Enum.TryParse(Settings.GetSetting(CalendarWeekRuleString), true,
-                out calendarWeekRule) ? calendarWeekRule : CalendarWeekRule.FirstFourDayWeek;
+            DayOfWeek dayOfWeek = DayOfWeek.Monday;
+            CalendarWeekRule calendarWeekRule = CalendarWeekRule.FirstFourDayWeek;
             int week = CultureInfo.CurrentCulture.Calendar.
                 GetWeekOfYear(date, calendarWeekRule, dayOfWeek);
             if (week == 53 && (!YearHas53Weeks(DateTime.Now.Year)))
