@@ -25,9 +25,9 @@ namespace WeekNumber
 
         internal static int GetIconResolution(bool forceUpdate = false)
         {
-            int iconResolution = (int)IconSize.Icon256; // Use hardcoded default
+            int iconResolution = (int)IconSize.Icon256; // Always use hardcoded default unless forceUpdate is true
             double myDbl = 1.0d;
-            if (forceUpdate || iconResolution == -1)
+            if (forceUpdate)
             {
                 // guess what icon resolution to use based on system
                 double winZoomLvl = GetWindowsZoom();
