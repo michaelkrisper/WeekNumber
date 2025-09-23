@@ -42,18 +42,11 @@ namespace WeekNumber
             _contextMenu = new WeekNumberContextMenu();
             _notifyIcon = GetNotifyIcon(_contextMenu.ContextMenu);
             UpdateIcon(week, ref _notifyIcon, iconResolution);
-            _notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
 
             #region Test code
             /* test code
             Rectangle rect =NotifyIconHelper.GetIconRect(_notifyIcon);*/
             #endregion Test code
-
-            if (Settings.SettingIsValue(Resources.DisplayStartupNotification, "True"))
-            {
-                DisplayUserInfoBalloonTip($"{_notifyIcon.Text}\r\n{Resources.StartupMessageText}");
-            }
-            _contextMenu.SettingsChangedHandler += OnSettingsChange;
         }
 
         #endregion Constructor
@@ -62,51 +55,13 @@ namespace WeekNumber
 
         private void DisplayUserInfoBalloonTip(string message)
         {
-            Log.LogCaller();
-            bool siletMsg = Settings.SettingIsValue(Resources.UseSilentNotifications, "True");
-            object currentSound = null;
-            if (siletMsg)
-            {
-                using (RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings", true))
-                {
-                    currentSound = regKey.GetValue("NOC_GLOBAL_SETTING_ALLOW_NOTIFICATION_SOUND");
-                    regKey.SetValue("NOC_GLOBAL_SETTING_ALLOW_NOTIFICATION_SOUND", 0);
-                    regKey.Flush();
-                    regKey.Close();
-                }
-            }
-            _notifyIcon.ShowBalloonTip(10000, Message.CAPTION, message, ToolTipIcon.None);
-            if (siletMsg)
-            {
-                using (RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Notifications\Settings", true))
-                {
-                    System.Threading.Thread.Sleep(1000);
-                    if (currentSound is null)
-                    {
-                        regKey.DeleteValue("NOC_GLOBAL_SETTING_ALLOW_NOTIFICATION_SOUND");
-                    }
-                    else
-                    {
-                        regKey.SetValue("NOC_GLOBAL_SETTING_ALLOW_NOTIFICATION_SOUND", currentSound);
-                    }
-                    regKey.Flush();
-                    regKey.Close();
-                }
-            }
+            // Notifications disabled in simplified version
+            return;
         }
 
         #endregion Display NotifyIcon BalloonTip
 
         #region Private event handlers
-
-        private void OnSettingsChange(object sender, EventArgs e)
-        {
-            UpdateRequest?.Invoke(null, null);
-        }
-        private void NotifyIcon_DoubleClick(object sender, EventArgs e)
-        {
-            Forms.DateForm.Display();
-        }
 
         #endregion Private event handlers
 
@@ -153,10 +108,7 @@ namespace WeekNumber
             {
                 if (_latestWeek != weekNumber)
                 {
-                    if (Settings.SettingIsValue(Resources.DisplayWeekChangedNotification, "True"))
-                    {
-                        DisplayUserInfoBalloonTip(notifyIcon.Text);
-                    }
+                    // No notifications in simplified version
                     _latestWeek = weekNumber;
                 }
             }

@@ -22,7 +22,7 @@ namespace WeekNumber
         {
             var message = ex is null ? text : $"{text}\r\n{ex}";
             if (ex is null) Log.Info = message; else Log.ErrorString = message;
-            Forms.MessageForm.DisplayMessage(message, !(ex is null));
+            MessageBox.Show(message, CAPTION, MessageBoxButtons.OK, ex is null ? MessageBoxIcon.Information : MessageBoxIcon.Error);
         }
 
         internal static void Show(string text)
@@ -33,7 +33,7 @@ namespace WeekNumber
         internal static void Show(string message, bool isError)
         {
             if (isError) Log.Info = message; else Log.ErrorString = message;
-            Forms.MessageForm.DisplayMessage(message, isError);
+            MessageBox.Show(message, CAPTION, MessageBoxButtons.OK, isError ? MessageBoxIcon.Error : MessageBoxIcon.Information);
         }
 
         internal static bool UserAcceptedQuestion(string message)
