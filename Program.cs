@@ -10,37 +10,38 @@ namespace WeekNumber
 {
     class Program : ApplicationContext
     {
-        [DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32.dll")]
         private static extern bool SetProcessDpiAwarenessContext(IntPtr dpiContext);
-        private const string RegistryKeyPath = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
 
         [STAThread]
-        private static void Main()
+        static void Main()
         {
             SetProcessDpiAwarenessContext(new IntPtr(-4));
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Program context = new();
+
+            using Program context = new();
             Application.Run(context);
-            context.Dispose();
         }
 
         public Program()
         {
-            var week = CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday).ToString(CultureInfo.InvariantCulture).PadLeft(2, '0');
+            var week = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(DateTime.Now, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
             using Bitmap bitmap = new Bitmap(32, 32);
             using Graphics graphics = Graphics.FromImage(bitmap);
-            using Font font = new Font("Segoe UI", 18);
+            using Font fontSmall = new Font("Segoe UI", 12);
             using Brush brush = new SolidBrush(Color.White);
-            graphics.DrawString(week, font, brush, 0, 0);
+            using Font fontBig = new Font("Segoe UI", 18);
+            using StringFormat format = new StringFormat { Alignment = StringAlignment.Center };
+            graphics.DrawString("KW", fontSmall, brush, 16, -6, format);
+            graphics.DrawString(week.ToString().PadLeft(2, '0'), fontBig, brush, 16, fontSmall.GetHeight() - 16, format);
             using Icon icon = Icon.FromHandle(bitmap.GetHicon());
             ContextMenu context = new ContextMenu([new MenuItem("Exit", (_, __) => Application.Exit())]);
             _ = new NotifyIcon { Visible = true, ContextMenu = context, Icon = icon };
 
-            using var registryKey = Registry.CurrentUser.OpenSubKey(RegistryKeyPath, true);
-            registryKey?.SetValue(Path.GetFileNameWithoutExtension(Application.ExecutablePath), Application.ExecutablePath);
-
+            using var registryKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            registryKey.SetValue(Path.GetFileNameWithoutExtension(Application.ExecutablePath), Application.ExecutablePath);
         }
     }
 }
